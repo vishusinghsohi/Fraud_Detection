@@ -12,15 +12,15 @@ Financial institutions process large volumes of transactions, making manual dete
 
 **Business question:** How can transaction type, amount, and changes in sender and receiver balances be used to identify potentially fraudulent transactions and support transaction screening?
 
-**Project goal:** Explore transaction patterns, build a supervised fraud classification model, and provide an interactive interface for single-transaction predictions. This is an educational prototype, not a production fraud prevention system.
+**Project goal:** Explore transaction patterns, build a supervised fraud classification model, and provide an interactive interface for single-transaction predictions. This is a prototype, not a production fraud prevention system.
 
-## How the project addresses the problem
+## How the projec addresses the problem
 
 - Explores transaction types, amounts, fraud distribution, and account balance patterns.
 - Engineers `balanceDiffOrig` and `balanceDiffDest` to capture account balance changes.
 - Standardizes numerical variables and one-hot encodes transaction types.
 - Uses class-weighted Logistic Regression to emphasize the rare fraud class.
-- Evaluates fraud detection using precision, recall, F1-score, accuracy, and a confusion matrix.
+- Evaluates fraud detection using precision, recall, accuracy, and a confusion matrix.
 - Exposes the saved model through a Streamlit form for interactive predictions.
 
 **Outcome:** The notebook reports approximately 94.71% accuracy and 95% fraud recall, but only about 2% fraud precision. The model catches most fraud in the test set at the cost of many false positives. Improving precision is an important next step.
@@ -46,8 +46,6 @@ The uploaded **`AIML Dataset.csv`** includes **6,362,620 records** and **11 orig
 **Class balance:** 8,213 fraudulent transactions (approximately 0.13%) versus 6,354,407 legitimate transactions (approximately 99.87%).
 
 The original CSV is approximately 471 MB and is **not included in this repository**, because it exceeds GitHub's usual 100 MB per-file limit. For notebook reproduction, download the dataset from [Kaggle — Fraud Detection Dataset](https://www.kaggle.com/datasets/amanalisiddiqui/fraud-detection-dataset) and save the CSV as `AIML Dataset.csv` next to `analysis_model.ipynb`.
-
-**Dataset source:** [Fraud Detection Dataset — Kaggle (amanalisiddiqui)](https://www.kaggle.com/datasets/amanalisiddiqui/fraud-detection-dataset). Check the dataset page for any applicable license and usage terms.
 
 ## Tech stack
 
@@ -133,10 +131,4 @@ The original dataset file is named `AIML Dataset.csv` and is **not committed to 
 
 - **Low precision:** Many legitimate transactions are flagged; optimize for a realistic false-positive budget.
 - **Validation:** Use a dedicated validation split and compare precision-recall curves and PR-AUC.
-- **Feature handling:** The Streamlit app asks for `step`, but the trained model does not use that feature; streamline the interface in a later version.
-- **Categorical handling:** The encoder in the notebook does not enable `handle_unknown="ignore"`; inputs must use categories seen during training.
 - **Model reliability:** This is an educational prototype, not a deployed financial fraud prevention system.
-
-## Acknowledgment
-
-The project is intended for learning and portfolio demonstration. Dataset source: [Kaggle — Fraud Detection Dataset](https://www.kaggle.com/datasets/amanalisiddiqui/fraud-detection-dataset).
