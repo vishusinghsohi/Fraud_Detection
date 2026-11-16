@@ -67,6 +67,12 @@ The original CSV is approximately 471 MB and is **not included in this repositor
 6. Evaluate model predictions on a stratified 30% test split.
 7. Save the trained pipeline and use it in a Streamlit app.
 
+## Project Architecture
+
+![Fraud Detection Project Architecture](images/fraud-detection-architecture.png)
+
+The diagram summarizes data preparation, machine learning model development, the Streamlit application, GitHub integration, and Snowflake deployment. Git API Integration enables repository access; automatic synchronization or CI/CD requires separate configuration.
+
 ## Model results
 
 Results shown in the provided notebook:
