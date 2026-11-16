@@ -167,7 +167,7 @@ Deployed the Fraud Detection application using **Snowflake and Streamlit**, demo
 
 ### 🏗️ Project Architecture
 
-![Project_Architecture](project_architecture)
+![Project_Architecture](project_architecture.png)
 
 ### 🚀 Key Project Highlights
 
