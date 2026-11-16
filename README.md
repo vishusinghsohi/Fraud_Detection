@@ -1,38 +1,36 @@
 # Fraud Detection Using Machine Learning
 
-An end-to-end machine learning prototype for identifying potentially fraudulent financial transactions. The project combines exploratory data analysis (EDA), feature engineering, a scikit-learn classification pipeline, and a Streamlit application for interactive predictions.
+**An end-to-end fraud detection prototype built with Python, scikit-learn, and Streamlit, with source code managed on GitHub and a Snowflake deployment.**
 
-## Project overview
+This project explores financial transaction data, builds a machine learning classifier, and provides an interactive application for screening individual transactions. It is a **learning and demonstration project**, not a production fraud prevention system.
 
-The goal is to investigate patterns in financial transactions and build a predictive model that flags potentially fraudulent activity. The dataset contains **6,362,620 transactions**, including **8,213 labeled fraudulent transactions** (about **0.13%** of the total), making class imbalance a key challenge.
+## Project at a Glance
 
-## Problem statement
+| Component | Details |
+| --- | --- |
+| **Problem** | Identify potentially fraudulent financial transactions |
+| **Dataset** | 6,362,620 transactions; 8,213 labeled as fraud (about 0.13%) |
+| **Model** | Class-weighted Logistic Regression in a scikit-learn pipeline |
+| **Application** | Streamlit interface for single-transaction predictions |
+| **Cloud platform** | Snowflake (Streamlit application) |
+| **Version control** | GitHub; Snowflake Git API Integration configured |
 
-Financial institutions process large volumes of transactions, making manual detection of suspicious activity difficult. Fraud is rare in this dataset (8,213 of 6,362,620 transactions, or approximately 0.13%), so a model can appear accurate while missing fraud or producing excessive false alarms.
+## 1. Business Problem and Objective
 
-**Business question:** How can transaction type, amount, and changes in sender and receiver balances be used to identify potentially fraudulent transactions and support transaction screening?
+Financial institutions process large numbers of transactions, while fraudulent transactions make up only a small fraction of the total. This imbalance makes fraud screening challenging: a model can achieve high overall accuracy but still generate too many false alarms or miss real fraud.
 
-**Project goal:** Explore transaction patterns, build a supervised fraud classification model, and provide an interactive interface for single-transaction predictions. This is a prototype, not a production fraud prevention system.
+**Business question:** How can transaction type, transaction amount, and changes in sender and receiver balances help identify potentially fraudulent activity?
 
-## How the projec addresses the problem
+**Objective:** Analyze the transaction data, train and evaluate a supervised fraud classification model, and make its predictions accessible through a simple web interface.
 
-- Explores transaction types, amounts, fraud distribution, and account balance patterns.
-- Engineers `balanceDiffOrig` and `balanceDiffDest` to capture account balance changes.
-- Standardizes numerical variables and one-hot encodes transaction types.
-- Uses class-weighted Logistic Regression to emphasize the rare fraud class.
-- Evaluates fraud detection using precision, recall, accuracy, and a confusion matrix.
-- Exposes the saved model through a Streamlit form for interactive predictions.
+## 2. Dataset
 
-**Outcome:** The notebook reports approximately 94.71% accuracy and 95% fraud recall, but only about 2% fraud precision. The model catches most fraud in the test set at the cost of many false positives. Improving precision is an important next step.
+The analysis uses **6,362,620 transactions**, including **8,213 fraudulent** and **6,354,407 non-fraudulent** records.
 
-## Dataset description
-
-The uploaded **`AIML Dataset.csv`** includes **6,362,620 records** and **11 original columns**:
-
-| Column | Meaning |
+| Feature | Description |
 | --- | --- |
 | `step` | Transaction time step |
-| `type` | Transaction type (PAYMENT, TRANSFER, CASH_OUT, CASH_IN, DEBIT) |
+| `type` | Transaction type: PAYMENT, TRANSFER, CASH_OUT, CASH_IN, or DEBIT |
 | `amount` | Transaction amount |
 | `nameOrig` | Sender identifier |
 | `oldbalanceOrg` | Sender balance before transaction |
@@ -40,145 +38,179 @@ The uploaded **`AIML Dataset.csv`** includes **6,362,620 records** and **11 orig
 | `nameDest` | Receiver identifier |
 | `oldbalanceDest` | Receiver balance before transaction |
 | `newbalanceDest` | Receiver balance after transaction |
-| `isFraud` | Target label: 1 for fraud, 0 for legitimate |
+| `isFraud` | Target label: 1 = fraud; 0 = legitimate |
 | `isFlaggedFraud` | Pre-existing fraud flag |
 
-**Class balance:** 8,213 fraudulent transactions (approximately 0.13%) versus 6,354,407 legitimate transactions (approximately 99.87%).
+**Dataset source:** [Fraud Detection Dataset on Kaggle](https://www.kaggle.com/datasets/amanalisiddiqui/fraud-detection-dataset).
 
-The original CSV is approximately 471 MB and is **not included in this repository**, because it exceeds GitHub's usual 100 MB per-file limit. For notebook reproduction, download the dataset from [Kaggle — Fraud Detection Dataset](https://www.kaggle.com/datasets/amanalisiddiqui/fraud-detection-dataset) and save the CSV as `AIML Dataset.csv` next to `analysis_model.ipynb`.
+The original dataset, used locally as `AIML Dataset.csv`, is about 471 MB and is **not included in this repository** because of GitHub's standard 100 MB file size limit. Download it from the source above to reproduce the notebook analysis, and review the source for its license and usage requirements.
 
-## Tech stack
+## 3. Project Architecture
 
-- **Python**, **Pandas**, **NumPy** — data analysis and preparation
-- **Matplotlib**, **Seaborn** — visualization
-- **Scikit-learn** — preprocessing, Logistic Regression, and evaluation
-- **Streamlit** — interactive web interface
-- **Joblib** — saved model pipeline
+![Fraud Detection Project Architecture](project_architecture.png)
 
-## Workflow
+The architecture illustrates how transaction data moves through preprocessing and machine learning model development into the Streamlit interface. GitHub hosts the project files, and Snowflake provides a cloud environment for the deployed app. **Snowflake Git API Integration enables repository access; it does not by itself configure automatic deployment or CI/CD.**
 
-1. Explore transaction types, amounts, fraudulent transaction rates, and balance-related patterns.
-2. Inspect data quality and class imbalance.
-3. Engineer two balance-change features:
-   - `balanceDiffOrig = oldbalanceOrg - newbalanceOrig`
-   - `balanceDiffDest = newbalanceDest - oldbalanceDest`
-4. Prepare data using `StandardScaler` for numeric values and `OneHotEncoder` for transaction type.
-5. Train a `LogisticRegression(class_weight="balanced", max_iter=1000)` model in a scikit-learn pipeline.
-6. Evaluate model predictions on a stratified 30% test split.
-7. Save the trained pipeline and use it in a Streamlit app.
+## 4. Tools and Technologies
 
-## Project Architecture
+| Tool | Role in the project |
+| --- | --- |
+| **Python** | Data processing and application development |
+| **Pandas / NumPy** | Data preparation and feature engineering |
+| **Matplotlib / Seaborn** | Exploratory data visualization |
+| **Scikit-learn** | Preprocessing, model training, and evaluation |
+| **Joblib** | Saving and loading the fitted pipeline |
+| **Streamlit** | Interactive fraud prediction application |
+| **GitHub** | Source code storage and version control |
+| **Snowflake** | Cloud-hosted Streamlit deployment and Git API Integration |
 
-![Fraud Detection Project Architecture](images/fraud-detection-architecture.png)
+## 5. Machine Learning Workflow
 
-The diagram summarizes data preparation, machine learning model development, the Streamlit application, GitHub integration, and Snowflake deployment. Git API Integration enables repository access; automatic synchronization or CI/CD requires separate configuration.
+1. **Explore the data:** Inspect transaction types, transaction amounts, fraud distribution, and balance patterns.
+2. **Prepare the data:** Check data quality and account for the substantial class imbalance.
+3. **Engineer features:** Create two balance-change variables:
+   ```python
+   balanceDiffOrig = oldbalanceOrg - newbalanceOrig
+   balanceDiffDest = newbalanceDest - oldbalanceDest
+   ```
+4. **Preprocess model inputs:** Apply `StandardScaler` to numeric features and `OneHotEncoder` to transaction type.
+5. **Train the model:** Fit `LogisticRegression(class_weight="balanced", max_iter=1000)` in a scikit-learn pipeline.
+6. **Evaluate results:** Use a stratified 30% test split and report precision, recall, F1-score, accuracy, and a confusion matrix.
+7. **Save and serve the pipeline:** Store the trained pipeline as `fraud_detection_pipeline.pkl` and load it in the Streamlit app.
 
-## Model results
+## 6. Model Evaluation
 
-Results shown in the provided notebook:
+The project notebook reports the following test-set results:
 
-| Metric | Test result |
+| Metric | Reported result |
 | --- | ---: |
 | Accuracy | 94.71% |
-| Fraud precision | 2% |
-| Fraud recall | 95% |
+| Fraud precision | Approximately 2% |
+| Fraud recall | Approximately 95% |
 | Fraud F1-score | 0.04 |
 | True positives | 2,334 |
 | False negatives | 130 |
 | False positives | 100,840 |
 
-**Interpretation:** The model detects most labeled fraudulent transactions, but it also generates a large number of false positives. Due to the highly imbalanced dataset, accuracy alone does not establish strong fraud detection performance. Future work should prioritize precision-recall trade-offs, threshold tuning, PR-AUC, and alternative models.
+### What these results mean
 
-## Files
+The classifier identifies most labeled fraud cases in the test set (**high recall**), but many legitimate transactions are also flagged (**low precision**). Because fraud represents only about 0.13% of the data, **accuracy alone is not a reliable measure of fraud detection quality**.
+
+**Next modeling priority:** Reduce false positives while maintaining useful recall, for example through threshold tuning, precision–recall analysis, PR-AUC, and comparison with alternative models.
+
+## 7. Streamlit Fraud Detection Application
+
+The Streamlit app allows a user to enter transaction details and request a prediction from the saved machine learning pipeline.
+
+**Transaction prediction interface:**
+
+![Fraud Detection Streamlit Application](Fraud_detect_app_ss.png)
+
+The app is designed to demonstrate model inference on individual transactions. Predictions should be treated as experimental screening outputs, not final decisions about real financial transactions.
+
+## 8. GitHub Integration and Snowflake Deployment
+
+### GitHub integration
+
+GitHub serves as the project's version-control and source-code repository. A **Git API Integration** was configured in Snowflake to authorize GitHub repository access as part of the project's cloud development workflow.
+
+- Store and organize the notebook, application code, dependency information, and model artifact.
+- Track changes using GitHub commits.
+- Configure Snowflake to access an approved GitHub repository URL prefix.
+
+**Important distinction:** Configuring the Git API Integration does not automatically link every app file or synchronize future GitHub commits. Any direct Git repository connection, pull/sync behavior, or automated CI/CD workflow must be configured separately.
+
+### Snowflake deployment
+
+The Streamlit application was deployed in Snowflake using a dedicated project database and schema.
+
+| Snowflake resource | Project name |
+| --- | --- |
+| Database | `FRAUD_DETECTION_DB` |
+| Schema | `FRAUD_SCHEMA` |
+| Application | `FRAUD_DETECTION` |
+
+This deployment demonstrates use of Snowflake's cloud workspace for hosting an interactive machine learning app. Opening a Snowflake-hosted Streamlit URL may require Snowflake authentication and appropriate permissions.
+
+**Deployment URL:** _Add your Snowflake Streamlit application URL here._
+
+**Public demo URL (optional):** _Add a Streamlit Community Cloud URL if you also publish a public version._
+
+## 9. Repository Structure
 
 ```text
-fraud-detection-ml/
-├── analysis_model.ipynb           # EDA, training and evaluation
-├── fraud_detection.py            # Streamlit application
-├── fraud_detection_pipeline.pkl  # Saved scikit-learn pipeline
-├── requirements.txt              # Python dependencies
-├── .gitignore                    # Excludes large dataset/local files
-└── README.md
+Fraud_Detection/
+├── analysis_model.ipynb            # EDA, model training, and evaluation
+├── fraud_detection.py             # Streamlit application
+├── fraud_detection_pipeline.pkl   # Saved ML pipeline
+├── requirements.txt               # Python dependencies
+├── Fraud_detect_app_ss.png         # App screenshot
+├── project_architecture.png        # Project architecture image
+├── .gitignore                     # Local data and environment exclusions
+└── README.md                      # Project documentation
 ```
 
-## Run locally
+> The image references above expect `Fraud_detect_app_ss.png` and `project_architecture.png` in the **repository root**. If either image is stored in a folder, update its Markdown path accordingly. The large CSV dataset is intentionally omitted from the repository.
 
-1. Clone or download this repository.
-2. Create and activate a Python environment.
-3. Install the dependencies:
+## 10. Run the Application Locally
 
-   ```bash
-   python -m pip install -r requirements.txt
-   ```
+**1. Clone the repository**
 
-4. Run the Streamlit app from the project folder:
+```bash
+git clone https://github.com/vishusinghsohi/Fraud_Detection.git
+cd Fraud_Detection
+```
 
-   ```bash
-   streamlit run fraud_detection.py
-   ```
+**2. Create and activate a virtual environment**
 
-   If `streamlit` is not recognized, use:
+```bash
+python -m venv .venv
+```
 
-   ```bash
-   python -m streamlit run fraud_detection.py
-   ```
-   
-## Streamlit Application
+On Windows PowerShell:
 
-An interactive web application developed using Streamlit that allows users to enter financial transaction details and receive fraud predictions from the trained machine learning model.
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
 
-### 1. Transaction Input Interface
+On macOS or Linux:
 
-Fraud Detection Prediction
-![Fraud Detection Model Prediction](Fraud_detect_app_ss.png)
+```bash
+source .venv/bin/activate
+```
 
-5. Open the local address displayed by Streamlit, enter transaction details, and select **Predict**.
+**3. Install the required libraries**
 
-The app loads `fraud_detection_pipeline.pkl`, so keep the model file in the same directory as `fraud_detection.py`. Use a compatible scikit-learn version when loading the saved pipeline; if compatibility warnings occur, retrain and re-export the model with your installed version.
+```bash
+python -m pip install -r requirements.txt
+```
 
-## Dataset and notebook reproduction
+**4. Launch Streamlit**
 
-The original dataset file is named `AIML Dataset.csv` and is **not committed to this repository** because it exceeds GitHub's standard per-file size limit. To rerun the notebook, download the CSV from [the Kaggle dataset page](https://www.kaggle.com/datasets/amanalisiddiqui/fraud-detection-dataset), rename it `AIML Dataset.csv` if needed, and place it beside `analysis_model.ipynb`.
+```bash
+python -m streamlit run fraud_detection.py
+```
 
-**Dataset attribution:** [Fraud Detection Dataset, published on Kaggle by amanalisiddiqui](https://www.kaggle.com/datasets/amanalisiddiqui/fraud-detection-dataset). Review the source page for license and usage requirements.
+Open the local URL shown in your terminal (usually `http://localhost:8501`), enter sample transaction information, and select **Predict**.
 
-## 🔗 GitHub Integration & Cloud Deployment
+**Model compatibility:** Keep `fraud_detection_pipeline.pkl` alongside `fraud_detection.py`. Loading a joblib pipeline can fail or behave unpredictably if the deployed scikit-learn version differs from the version used during training. Pin compatible dependencies or retrain and export the pipeline in the target environment.
 
-### GitHub Integration
+## 11. Reproduce the Notebook
 
-The Fraud Detection application incorporates GitHub for source code management, version control, and integration with Snowflake's cloud development environment.
+1. Download the [dataset from Kaggle](https://www.kaggle.com/datasets/amanalisiddiqui/fraud-detection-dataset).
+2. Save it as `AIML Dataset.csv` next to `analysis_model.ipynb`.
+3. Install the notebook dependencies in a compatible Python environment.
+4. Open `analysis_model.ipynb` and run the notebook cells.
 
-**Integration Workflow:**
-1. Created a GitHub repository to maintain the project's source code, trained machine learning pipeline, and application files.
-2. Configured a **Git API Integration** in Snowflake to authorize access to GitHub repositories.
-3. Used GitHub as the central repository for managing and tracking project changes.
-4. Established the foundation for a Git-based application deployment workflow.
+## 12. Limitations and Future Improvements
 
-### ☁️ Snowflake Deployment
+- **False positives:** The present model has low fraud precision and may flag many legitimate transactions.
+- **Evaluation:** Add PR-AUC, threshold analysis, and a dedicated validation strategy.
+- **Model comparison:** Experiment with alternative classifiers and calibration techniques.
+- **Deployment reliability:** Document exact dependency versions and verify prediction behavior after deployment.
+- **Operations:** Add testing and, if needed, a clearly configured GitHub-to-Snowflake deployment workflow.
+- **Intended use:** Keep the application as an educational prototype until it has been tested for real-world use, monitoring, data drift, and decision risks.
 
-Deployed the Fraud Detection application using **Snowflake and Streamlit**, demonstrating practical experience in deploying machine learning applications within a cloud environment.
+---
 
-**Deployment Process:**
-1. Created a dedicated Snowflake database: `FRAUD_DETECTION_DB`.
-2. Configured a schema: `FRAUD_SCHEMA` to organize application resources.
-3. Used a Snowflake virtual warehouse for application development and execution.
-4. Deployed the Python-based Streamlit Fraud Detection application within Snowflake.
-5. Configured the application environment to support the machine learning prediction workflow.
-
-### 🏗️ Project Architecture
-
-![Project_Architecture](project_architecture.png)
-
-### 🚀 Key Project Highlights
-
-- Developed a machine learning-based fraud detection application.
-- Integrated Streamlit with a trained Scikit-learn pipeline.
-- Configured GitHub integration within Snowflake.
-- Deployed the application in a cloud-hosted environment.
-- Gained hands-on experience with machine learning deployment, Git-based workflows, and cloud technologies.
-
-## Limitations and future improvements
-
-- **Low precision:** Many legitimate transactions are flagged; optimize for a realistic false-positive budget.
-- **Validation:** Use a dedicated validation split and compare precision-recall curves and PR-AUC.
-- **Model reliability:** This is an educational prototype, not a deployed financial fraud prevention system.
+**Project repository:** [vishusinghsohi/Fraud_Detection](https://github.com/vishusinghsohi/Fraud_Detection)
