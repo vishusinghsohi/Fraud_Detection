@@ -116,6 +116,16 @@ fraud-detection-ml/
    ```bash
    python -m streamlit run fraud_detection.py
    ```
+   
+## Streamlit Application
+
+An interactive web application developed using Streamlit that allows users to enter financial transaction details and receive fraud predictions from the trained machine learning model.
+
+### 1. Transaction Input Interface
+
+Users can enter transaction type, amount, sender balance, and receiver balance.
+
+![Streamlit Input Interface](Fraud_detect_app_ss)
 
 5. Open the local address displayed by Streamlit, enter transaction details, and select **Predict**.
 
