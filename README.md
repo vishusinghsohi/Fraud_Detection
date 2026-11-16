@@ -136,6 +136,41 @@ The original dataset file is named `AIML Dataset.csv` and is **not committed to 
 
 **Dataset attribution:** [Fraud Detection Dataset, published on Kaggle by amanalisiddiqui](https://www.kaggle.com/datasets/amanalisiddiqui/fraud-detection-dataset). Review the source page for license and usage requirements.
 
+## 🔗 GitHub Integration & Cloud Deployment
+
+### GitHub Integration
+
+The Fraud Detection application incorporates GitHub for source code management, version control, and integration with Snowflake's cloud development environment.
+
+**Integration Workflow:**
+1. Created a GitHub repository to maintain the project's source code, trained machine learning pipeline, and application files.
+2. Configured a **Git API Integration** in Snowflake to authorize access to GitHub repositories.
+3. Used GitHub as the central repository for managing and tracking project changes.
+4. Established the foundation for a Git-based application deployment workflow.
+
+### ☁️ Snowflake Deployment
+
+Deployed the Fraud Detection application using **Snowflake and Streamlit**, demonstrating practical experience in deploying machine learning applications within a cloud environment.
+
+**Deployment Process:**
+1. Created a dedicated Snowflake database: `FRAUD_DETECTION_DB`.
+2. Configured a schema: `FRAUD_SCHEMA` to organize application resources.
+3. Used a Snowflake virtual warehouse for application development and execution.
+4. Deployed the Python-based Streamlit Fraud Detection application within Snowflake.
+5. Configured the application environment to support the machine learning prediction workflow.
+
+### 🏗️ Project Architecture
+
+![Project_Architecture](project_architecture)
+
+### 🚀 Key Project Highlights
+
+- Developed a machine learning-based fraud detection application.
+- Integrated Streamlit with a trained Scikit-learn pipeline.
+- Configured GitHub integration within Snowflake.
+- Deployed the application in a cloud-hosted environment.
+- Gained hands-on experience with machine learning deployment, Git-based workflows, and cloud technologies.
+
 ## Limitations and future improvements
 
 - **Low precision:** Many legitimate transactions are flagged; optimize for a realistic false-positive budget.
