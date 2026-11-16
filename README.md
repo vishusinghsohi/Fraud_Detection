@@ -124,7 +124,7 @@ An interactive web application developed using Streamlit that allows users to en
 ### 1. Transaction Input Interface
 
 Fraud Detection Prediction
-![Fraud Detection Model Prediction](Fraud_detect_app_ss)
+![Fraud Detection Model Prediction](Fraud_detect_app_ss.png)
 
 5. Open the local address displayed by Streamlit, enter transaction details, and select **Predict**.
 
